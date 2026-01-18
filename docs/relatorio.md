@@ -29,6 +29,9 @@ O modelo PaaS foi escolhido pois abstrai a complexidade de gerenciamento do Sist
 
 ## 3. Arquitetura e Conceitos Aplicados
 
+![Diagrama da Arquitetura](diagrama.png)
+_Figura 1: Arquitetura Simplificada da Solução no Google Cloud Run_
+
 ### 3.1 Docker e Containerização
 
 Utilizamos um **Dockerfile** que prepara uma imagem híbrida baseada em `python:3.11-slim`, instalando o `nginx` sobre ela. Isso permite que um único artefato de deploy contenha tanto a lógica de apresentação quanto a de negócio, simplificando a esteira de deploy.
@@ -59,3 +62,11 @@ Implementamos uma esteira de Integração e Entrega Contínuas (CI/CD) utilizand
 4.  **Deploy**: O comando `gcloud run deploy` atualiza o serviço em produção com a nova imagem.
 
 Essa abordagem elimina erros manuais de deploy e garante que a versão em produção esteja sempre sincronizada com o código aprovado no repositório.
+
+## 5. Conclusão
+
+O projeto demonstra com sucesso a aplicação de conceitos modernos de Cloud Computing e DevOps. Através da utilização de containers (Docker), conseguimos encapsular a aplicação e suas dependências, garantindo portabilidade entre o ambiente de desenvolvimento local e a nuvem.
+
+A escolha do Google Cloud Run como plataforma de execução provou-se acertada para o cenário proposto, oferecendo um equilíbrio ideal entre facilidade de gestão (Serverless) e poder de escalabilidade. A implementação do pipeline de CI/CD via GitHub Actions fecha o ciclo de desenvolvimento, permitindo entregas rápidas e seguras, características fundamentais para equipes ágeis.
+
+Em suma, a arquitetura proposta atende aos requisitos de escalabilidade, segurança e modernização solicitados, proporcionando uma base sólida para futuras expansões do portfólio.
