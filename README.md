@@ -10,6 +10,13 @@ Este projeto implementa uma página institucional (Portfólio) servida junto a u
 - **Backend**: FastAPI (Python) expondo status e contador de visitas.
 - **Infraestrutura**: Google Cloud Run (PaaS), Deployment Contínuo (CI/CD) via GitHub Actions.
 
+![Arquitetura do Projeto](docs/diagrama.png)
+_Diagrama simplificado da arquitetura na nuvem._
+
+## 🔗 Link do Projeto (Online)
+
+**[Acesse o Portfólio no Google Cloud Run](https://portfolio-docker-cloudrun-728889819893.us-central1.run.app)**
+
 ## 🚀 Como Rodar Localmente (Docker)
 
 Certifique-se de ter o Docker instalado.
