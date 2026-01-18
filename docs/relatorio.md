@@ -87,6 +87,14 @@ Para demonstrar maturidade e profundidade técnica, foram implementadas as segui
 - **Tema Híbrido (Dark/Light Mode)**: O usuário pode alternar entre temas, demonstrando domínio de CSS Variables e manipulação de DOM.
 - **Micro-interações**: Animações de entrada (`FadeIn`) e efeitos de hover nos cards para uma experiência fluida.
 
+### 5.4 Robustez e Confiabilidade (Resolução de Desafios)
+
+Para garantir que a aplicação funcione perfeitamente em qualquer ambiente (dev local no Windows vs prod no Linux), implementamos estratégias de **Resiliência**:
+
+- **Correção Automática de EOL**: Scripts shell (`entrypoint.sh`, `backup_script.sh`) sofrem limpeza automática de quebras de linha (`sed -i 's/\r$//'`) durante o build do Docker, prevenindo erros de "bad interpreter".
+- **Orquestração de Processos**: O `entrypoint` gerencia múltiplos serviços (Cron, Nginx, Uvicorn) em um único container, garantindo que o monitoramento inicie em paralelo com a aplicação.
+- **Fail-Safe no Backup**: O script de backup verifica a existência dos arquivos antes de tentar a cópia, evitando falhas silenciosas ou logs de erro desnecessários na inicialização.
+
 ## 6. Comparativo de Modelos: IaaS vs PaaS vs SaaS
 
 | Característica     | IaaS (ex: AWS EC2)           | **PaaS (ex: Cloud Run)**                | SaaS (ex: Firebase)              |
