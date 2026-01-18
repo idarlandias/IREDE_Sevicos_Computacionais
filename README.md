@@ -53,7 +53,7 @@ O projeto está configurado com CI/CD. Ao fazer push na branch `main`, o GitHub 
 2. **Push** para o Google Artifact Registry.
 3. **Deploy** automático no Cloud Run.
 
-URL de Produção: [INSERIR URL APÓS DEPLOY]
+URL de Produção: https://portfolio-docker-cloudrun-728889819893.us-central1.run.app
 
 ## 🛠️ Estrutura do Projeto
 
