@@ -1,0 +1,55 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: us-central1
+  SERVICE_NAME: portfolio-docker-cloudrun
+  REPO_NAME: portfolio-repo
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+      - name: Convert REPO_NAME to lowercase
+        run: |
+          echo "REPO_NAME_LOWER=${REPO_NAME,,}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Build and Push Container
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+          docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME_LOWER }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME_LOWER }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME_LOWER }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          flags: "--allow-unauthenticated"
+          env_vars: |
+            APP_ENV=production
+            APP_VERSION=${{ github.sha }}
+
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}

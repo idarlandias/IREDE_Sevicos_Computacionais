@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud Architecture Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="background-globes">
+      <div class="globe globe-1"></div>
+      <div class="globe globe-2"></div>
+    </div>
+
+    <main class="container">
+      <header>
+        <div class="badge">Projeto Integrador</div>
+        <h1>Arquitetura Cloud & Docker</h1>
+        <p>
+          Implementação de microsserviços containerizados com deployment
+          contínuo no Google Cloud Run.
+        </p>
+      </header>
+
+      <section class="grid-cards">
+        <div class="card">
+          <div class="icon">🐳</div>
+          <h3>Dockerfile</h3>
+          <p>
+            Container único otimizado rodando Nginx (Reverse Proxy) e FastAPI
+            simultaneamente.
+          </p>
+        </div>
+        <div class="card">
+          <div class="icon">🕸️</div>
+          <h3>Docker Compose</h3>
+          <p>
+            Ambiente de desenvolvimento local simulando redes, volumes
+            persistentes e múltiplas instâncias.
+          </p>
+        </div>
+        <div class="card">
+          <div class="icon">☁️</div>
+          <h3>Google Cloud Run</h3>
+          <p>
+            Deploy Serverless com escalabilidade automática e gerenciamento de
+            infraestrutura (PaaS).
+          </p>
+        </div>
+        <div class="card">
+          <div class="icon">🚀</div>
+          <h3>CI/CD Pipeline</h3>
+          <p>
+            Automação completa com GitHub Actions: Build &rarr; Push Artifact
+            Registry &rarr; Deploy.
+          </p>
+        </div>
+      </section>
+
+      <section class="status-panel">
+        <div class="panel-header">
+          <h2>System Status</h2>
+          <div class="status-indicator" id="connection-status">
+            <span class="dot"></span> Online
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span class="label">Versão</span>
+            <span class="value" id="api-version">--</span>
+          </div>
+          <div class="metric">
+            <span class="label">Uptime</span>
+            <span class="value" id="api-uptime">--</span>
+          </div>
+          <div class="metric">
+            <span class="label">Ambiente</span>
+            <span class="value" id="api-env">--</span>
+          </div>
+          <div class="metric highlight">
+            <span class="label">Visitas Totais</span>
+            <span class="value" id="api-visits">--</span>
+          </div>
+        </div>
+
+        <button id="refresh-btn" class="btn-primary">
+          <span class="btn-icon">↻</span> Atualizar Dados
+        </button>
+        <p class="last-updated">
+          Última atualização: <span id="last-update-time">--</span>
+        </p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

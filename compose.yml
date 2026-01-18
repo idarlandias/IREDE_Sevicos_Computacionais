@@ -1,0 +1,15 @@
+services:
+  portfolio-app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    networks:
+      - portfolio-net
+    environment:
+      - APP_ENV=local_docker
+
+networks:
+  portfolio-net:
+    driver: bridge
