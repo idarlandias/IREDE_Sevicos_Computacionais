@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.cursor = 'wait';
         
         try {
-            const response = await fetch('/api/status');
+            // Add timestamp to prevent caching
+            const response = await fetch(`/api/status?_=${new Date().getTime()}`);
             if (!response.ok) throw new Error('Network error');
             
             const data = await response.json();
