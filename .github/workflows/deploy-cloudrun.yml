@@ -45,7 +45,7 @@ jobs:
           service: ${{ env.SERVICE_NAME }}
           region: ${{ env.REGION }}
           image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME_LOWER }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
-          flags: "--allow-unauthenticated"
+          flags: "--allow-unauthenticated --service-account=portfolio-deployer@portfolio-docker-irede-2026.iam.gserviceaccount.com"
           env_vars: |
             APP_ENV=production
             APP_VERSION=${{ github.sha }}
