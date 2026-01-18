@@ -25,7 +25,11 @@ O modelo PaaS foi escolhido pois abstrai a complexidade de gerenciamento do Sist
 ### Desafios
 
 - **Cold Starts**: Como o serviço pode escalar a zero, a primeira requisição após um período de inatividade pode levar alguns segundos a mais para carregar enquanto o container é iniciado.
-- **Estado (Statelessness)**: Aplicações no Cloud Run devem ser preferencialmente _stateless_. A persistência de dados (como o nosso contador) em arquivos locais do container é efêmera e perdida se o container reiniciar. Solução ideal seria usar um banco de dados externo ou Google Cloud Storage, mas para este projeto acadêmico, demonstramos a persistência via volumes locais no ambiente Docker de desenvolvimento.
+- **Cold Starts**: Como o serviço pode escalar a zero, a primeira requisição após um período de inatividade pode levar alguns segundos a mais para carregar enquanto o container é iniciado.
+- **Estado (Statelessness)**: Containers no Cloud Run são efêmeros.
+  - Implementamos uma funcionalidade de **"Registrar Visita"** que grava em um arquivo JSON local (`/data/visitas.json`) para demonstrar o uso de volumes.
+  - **Importante**: Em produção no Cloud Run, esse arquivo é temporário. Se o container reiniciar, os dados somem. Isso prova o conceito de **Statelessness**: para persistência real em nuvem, deve-se usar serviços externos como Cloud SQL ou Cloud Storage, pois o disco local do container não é confiável a longo prazo.
+  - No ambiente local (`docker compose`), o volume é mapeado para o disco do host, garantindo persistência total.
 
 ## 3. Arquitetura e Conceitos Aplicados
 

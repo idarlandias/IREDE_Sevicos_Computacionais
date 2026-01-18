@@ -96,6 +96,23 @@
         <p class="last-updated">
           Última atualização: <span id="last-update-time">--</span>
         </p>
+
+        <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+            <h3>📜 Persistência de Dados (Volume)</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0.5rem 0 1rem;">
+                Demonstração de gravação em arquivo JSON local (/data/visitas.json).
+            </p>
+            <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="visitor-name" placeholder="Seu nome..." 
+                       style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 0.5rem; color: white; flex: 1;">
+                <button id="register-btn" class="btn-primary" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    Gravar Visita
+                </button>
+            </div>
+            <div id="visits-log" style="margin-top: 1rem; font-family: monospace; font-size: 0.85rem; color: #a5f3fc; max-height: 150px; overflow-y: auto;">
+                <!-- Visits will appear here -->
+            </div>
+        </div>
       </section>
     </main>
 
