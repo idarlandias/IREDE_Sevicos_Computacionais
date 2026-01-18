@@ -112,9 +112,34 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         options: {
             responsive: true,
-            scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' } }, x: { grid: { color: 'rgba(255,255,255,0.1)' } } },
-            plugins: { legend: { labels: { color: '#cbd5e1' } } }
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: 'rgba(128,128,128,0.2)' },
+                    ticks: { color: document.body.classList.contains('light-mode') ? '#1e293b' : '#94a3b8' }
+                }, 
+                x: { 
+                    grid: { color: 'rgba(128,128,128,0.2)' },
+                    ticks: { color: document.body.classList.contains('light-mode') ? '#1e293b' : '#94a3b8' }
+                } 
+            },
+            plugins: { 
+                legend: { 
+                    labels: { color: document.body.classList.contains('light-mode') ? '#1e293b' : '#cbd5e1' } 
+                } 
+            }
         }
+    });
+
+    // Update Chart Colors on Theme Toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        const isLight = document.body.classList.contains('light-mode');
+        const textColor = isLight ? '#1e293b' : '#94a3b8';
+        
+        chart.options.scales.x.ticks.color = textColor;
+        chart.options.scales.y.ticks.color = textColor;
+        chart.options.plugins.legend.labels.color = textColor;
+        chart.update();
     });
 
     // Update interval
