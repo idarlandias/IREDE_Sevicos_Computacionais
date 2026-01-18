@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Técnico - Projeto Integrador</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm; /* A4 width */
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+        }
+
+        h1 {
+            color: #0f172a;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-top: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            color: #334155;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        ul {
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #ef4444;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: -1.5rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            @page {
+                margin: 2cm;
+                size: A4;
+            }
+
+            h2 {
+                break-before: auto; /* Allow breaking, but avoid orphans if possible */
+            }
+
+            img {
+                max-width: 80% !important;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+        }
+        
+        .cover-page {
+            text-align: center;
+            margin-top: 5cm;
+            page-break-after: always;
+        }
+        
+        .cover-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cover-subtitle {
+            font-size: 1.5rem;
+            color: #64748b;
+            margin-bottom: 4rem;
+        }
+        
+        .cover-author {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Capa -->
+    <div class="cover-page">
+        <div class="cover-title">Relatório Técnico</div>
+        <div class="cover-subtitle">Projeto Integrador: Docker e Nuvem</div>
+        <div class="cover-author">
+            <strong>Residência em TIC 20</strong><br>
+            Janeiro, 2026
+        </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <h1>1. Descrição da Aplicação</h1>
+    <p>A aplicação consiste em um portfólio institucional web integrado a uma API de monitoramento.</p>
+    <ul>
+        <li><strong>Frontend</strong>: Aplicação SPA (Single Page Application) estática, desenvolvida com HTML5, CSS3 (efeitos de glassmorphism) e JavaScript Vanilla.</li>
+        <li><strong>Backend</strong>: API REST desenvolvida em Python com <strong>FastAPI</strong>, responsável por fornecer dados de saúde do sistema (health check) e métricas de uso (uptime, contador de visitas persistente).</li>
+        <li><strong>Servidor Web</strong>: <strong>Nginx</strong>, atuando como servidor de arquivos estáticos e Proxy Reverso para a API, tudo encapsulado em um único container.</li>
+    </ul>
+
+    <h1>2. Modelo de Serviço Escolhido: PaaS</h1>
+    <p>Optamos por utilizar o <strong>Google Cloud Run</strong>, um serviço de PaaS (Platform as a Service) gerenciado "Serverless" para containers.</p>
+
+    <h3>Justificativa</h3>
+    <p>O modelo PaaS foi escolhido pois abstrai a complexidade de gerenciamento do Sistema Operacional e do Hardware subjacente, permitindo focar exclusivamente no código e no container da aplicação.</p>
+
+    <h3>Benefícios</h3>
+    <ul>
+        <li><strong>Automação</strong>: O Google gerencia a infraestrutura, atualizações de segurança do host e provisionamento de recursos.</li>
+        <li><strong>Custo-Benefício</strong>: Modelo "Pay-as-you-go" (pague pelo uso). Se ninguém acessa o site, o custo tende a zero.</li>
+        <li><strong>Simplicidade Operacional</strong>: Deploy simplificado através de uma única imagem Docker.</li>
+    </ul>
+
+    <h3>Desafios</h3>
+    <ul>
+        <li><strong>Cold Starts</strong>: Como o serviço pode escalar a zero, a primeira requisição após inatividade pode levar alguns segundos a mais.</li>
+        <li><strong>Estado (Statelessness)</strong>: Containers no Cloud Run são efêmeros.
+            <ul>
+                <li>Implementamos uma funcionalidade de <strong>"Registrar Visita"</strong> que grava em um arquivo JSON local (<code>/data/visitas.json</code>) para demonstrar o uso de volumes.</li>
+                <li><strong>Importante</strong>: Em produção no Cloud Run, esse arquivo é temporário. Isso prova o conceito de <strong>Statelessness</strong>.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h1>3. Arquitetura e Conceitos Aplicados</h1>
+    
+    <img src="diagrama.png" alt="Diagrama da Arquitetura">
+    <p class="caption">Figura 1: Arquitetura Simplificada da Solução no Google Cloud Run</p>
+
+    <h3>3.1 Docker e Containerização</h3>
+    <p>Utilizamos um <strong>Dockerfile</strong> que prepara uma imagem híbrida baseada em <code>python:3.11-slim</code>, instalando o <code>nginx</code> sobre ela. Isso permite que um único artefato de deploy contenha tanto a lógica de apresentação quanto a de negócio.</p>
+
+    <h3>3.2 Escalabilidade e Elasticidade</h3>
+    <p>O Cloud Run oferece <strong>Elasticidade Automática</strong>.</p>
+    <ul>
+        <li>Se o tráfego aumentar repentinamente, a plataforma provisiona novas instâncias (Scale Out).</li>
+        <li>Quando o tráfego diminui, as instâncias são desligadas (Scale In).</li>
+    </ul>
+
+    <h3>3.3 Responsabilidade Compartilhada</h3>
+    <ul>
+        <li><strong>Provedor (Google)</strong>: Responsável pela segurança física, rede e host.</li>
+        <li><strong>Cliente (Nós)</strong>: Responsável pela segurança da aplicação (código) e configuração do container.</li>
+    </ul>
+
+    <h1>4. Estratégia de Deploy (CI/CD)</h1>
+    <p>Implementamos uma esteira de Integração e Entrega Contínuas (CI/CD) utilizando <strong>GitHub Actions</strong>.</p>
+    
+    <h3>Fluxo Automatizado</h3>
+    <ol>
+        <li><strong>Trigger</strong>: Commit na branch <code>main</code>.</li>
+        <li><strong>Build</strong>: O GitHub Actions constrói a imagem Docker.</li>
+        <li><strong>Push</strong>: A imagem é enviada para o <strong>Google Artifact Registry</strong>.</li>
+        <li><strong>Deploy</strong>: O deploy é realizado automaticamente no Cloud Run.</li>
+    </ol>
+
+    <h1>5. Melhorias Avançadas Implementadas</h1>
+    
+    <h3>5.1 Observabilidade e Monitoramento</h3>
+    <ul>
+        <li><strong>Logs em Tempo Real</strong>: Endpoint <code>/api/logs</code> para visualização remota.</li>
+        <li><strong>Health Check Avançado</strong>: Verificação de latência e escrita em disco.</li>
+        <li><strong>Métricas e Dashboards</strong>: Gráficos em tempo real com Chart.js.</li>
+    </ul>
+
+    <h3>5.2 Segurança e Autenticação</h3>
+    <ul>
+        <li><strong>Autenticação via Token</strong>: Proteção de endpoints sensíveis.</li>
+        <li><strong>Backup Automático</strong>: Cron Job simulando Disaster Recovery.</li>
+    </ul>
+
+    <h3>5.3 UX/UI Premium</h3>
+    <ul>
+        <li><strong>Tema Híbrido</strong>: Dark/Light Mode.</li>
+        <li><strong>Micro-interações</strong>: Animações fluidas.</li>
+    </ul>
+
+    <h1>6. Comparativo de Modelos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Característica</th>
+                <th>IaaS (AWS EC2)</th>
+                <th>PaaS (Cloud Run)</th>
+                <th>SaaS (Firebase)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Gerenciamento</strong></td>
+                <td>Alto</td>
+                <td><strong>Médio</strong></td>
+                <td>Baixo</td>
+            </tr>
+            <tr>
+                <td><strong>Escalabilidade</strong></td>
+                <td>Manual</td>
+                <td><strong>Automática</strong></td>
+                <td>Automática</td>
+            </tr>
+            <tr>
+                <td><strong>Custo</strong></td>
+                <td>Por Instância</td>
+                <td><strong>Por Requisição</strong></td>
+                <td>Por Uso</td>
+            </tr>
+            <tr>
+                <td><strong>Flexibilidade</strong></td>
+                <td>Total</td>
+                <td><strong>Alta</strong></td>
+                <td>Limitada</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>7. Conclusão</h1>
+    <p>O projeto demonstra com sucesso a aplicação de conceitos modernos de Cloud Computing e DevOps. Através da utilização de containers (Docker) e PaaS (Cloud Run), alcançamos uma arquitetura escalável, segura e de fácil manutenção, atendendo integralmente aos requisitos propostos.</p>
+
+</body>
+</html>

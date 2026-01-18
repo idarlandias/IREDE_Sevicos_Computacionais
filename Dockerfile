@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
-# Install Nginx
-RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+# Install Nginx and Cron
+RUN apt-get update && apt-get install -y nginx cron && rm -rf /var/lib/apt/lists/*
 
 # Setup working directory for API
 WORKDIR /app
@@ -11,7 +11,6 @@ WORKDIR /app
 RUN pip install fastapi uvicorn prometheus-client
 
 # Setup Cron for Backup simulation
-RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /var/log/cron
 
 # Copy App Source
@@ -25,6 +24,7 @@ COPY nginx/nginx.conf /etc/nginx/sites-available/default
 
 # Setup Backup Script
 COPY backup_script.sh /usr/local/bin/backup_script.sh
+RUN sed -i 's/\r$//' /usr/local/bin/backup_script.sh
 RUN chmod +x /usr/local/bin/backup_script.sh
 
 # Setup Cron Job (Run every minute for demo purposes, instead of 24h)
