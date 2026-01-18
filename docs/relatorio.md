@@ -112,3 +112,5 @@ O projeto demonstra com sucesso a aplicação de conceitos modernos de Cloud Com
 A escolha do Google Cloud Run como plataforma de execução provou-se acertada para o cenário proposto, oferecendo um equilíbrio ideal entre facilidade de gestão (Serverless) e poder de escalabilidade. A implementação do pipeline de CI/CD via GitHub Actions fecha o ciclo de desenvolvimento, permitindo entregas rápidas e seguras, características fundamentais para equipes ágeis.
 
 Em suma, a arquitetura proposta atende aos requisitos de escalabilidade, segurança e modernização solicitados, proporcionando uma base sólida para futuras expansões do portfólio.
+
+**Acesse o projeto online:** [https://portfolio-docker-cloudrun-728889819893.us-central1.run.app](https://portfolio-docker-cloudrun-728889819893.us-central1.run.app)

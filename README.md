@@ -1,5 +1,10 @@
 # Portfolio Docker & Nuvem
 
+[![Cloud Run Deploy](https://img.shields.io/badge/Deploy-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://portfolio-docker-cloudrun-728889819893.us-central1.run.app)
+[![Status](https://img.shields.io/website?url=https%3A%2F%2Fportfolio-docker-cloudrun-728889819893.us-central1.run.app%2Fapi%2Fhealth&style=for-the-badge&label=Service%20Status)](https://portfolio-docker-cloudrun-728889819893.us-central1.run.app)
+
+> **Link Oficial:** [https://portfolio-docker-cloudrun-728889819893.us-central1.run.app](https://portfolio-docker-cloudrun-728889819893.us-central1.run.app)
+
 Aplicação demonstrativa de arquitetura containerizada implantada no Google Cloud Run, atendendo aos requisitos do Projeto Integrador.
 
 ## 📋 Visão Geral
