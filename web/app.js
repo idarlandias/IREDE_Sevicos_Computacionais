@@ -83,7 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 container.innerHTML = logs.map(log => {
-                    const localTime = new Date(log.timestamp).toLocaleTimeString();
+                    // Force UTC interpretation by appending 'Z' if missing
+                    const timeStr = log.timestamp.endsWith('Z') ? log.timestamp : log.timestamp + 'Z';
+                    const localTime = new Date(timeStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     return `<div><span style="color: #4ade80">●</span> <b>${log.name}</b> <span style="opacity: 0.6">em ${localTime}</span></div>`;
                 }).join('');
             }
