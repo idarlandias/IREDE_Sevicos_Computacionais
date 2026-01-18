@@ -178,14 +178,14 @@
              }
         });
 
-        // Theme Toggle
+        // Theme Toggle using CSS Class
+        const themeBtn = document.getElementById('theme-toggle');
         let isDark = true;
-        document.getElementById('theme-toggle').addEventListener('click', (e) => {
+
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
             isDark = !isDark;
-            document.body.style.backgroundColor = isDark ? '#0f172a' : '#f0f9ff';
-            // Dark mode: white text, Light mode: Dark Navy Blue text
-            document.body.style.color = isDark ? '#f8fafc' : '#1e293b';
-            e.target.textContent = isDark ? '🌙' : '☀️';
+            themeBtn.textContent = isDark ? '🌙' : '☀️';
         });
     </script>
 </body>
