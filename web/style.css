@@ -291,8 +291,22 @@ body.light-mode .card, body.light-mode input {
     color: #334155;
 }
 
-body.light-mode h1, body.light-mode h2, body.light-mode h3 {
-    color: #0f172a;
+body.light-mode h1 {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #1e293b;
+}
+
+body.light-mode h2, body.light-mode h3 {
+    color: #1e293b !important;
+}
+
+body.light-mode p, body.light-mode .label, body.light-mode .value {
+    color: #334155 !important;
+}
+
+body.light-mode .card h3 {
+    color: #0f172a !important; /* Darkest blue for card titles */
 }
 
 /* Animations using Keyframes */
