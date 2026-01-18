@@ -82,9 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 
-                container.innerHTML = logs.map(log => 
-                    `<div><span style="color: #4ade80">●</span> <b>${log.name}</b> <span style="opacity: 0.6">em ${log.timestamp.split('T')[1].split('.')[0]}</span></div>`
-                ).join('');
+                container.innerHTML = logs.map(log => {
+                    const localTime = new Date(log.timestamp).toLocaleTimeString();
+                    return `<div><span style="color: #4ade80">●</span> <b>${log.name}</b> <span style="opacity: 0.6">em ${localTime}</span></div>`;
+                }).join('');
             }
         } catch (e) {
             console.error(e);
