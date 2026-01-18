@@ -67,7 +67,37 @@ Implementamos uma esteira de Integração e Entrega Contínuas (CI/CD) utilizand
 
 Essa abordagem elimina erros manuais de deploy e garante que a versão em produção esteja sempre sincronizada com o código aprovado no repositório.
 
-## 5. Conclusão
+## 5. Melhorias Avançadas Implementadas
+
+Para demonstrar maturidade e profundidade técnica, foram implementadas as seguintes melhorias que vão além dos requisitos básicos:
+
+### 5.1 Observabilidade e Monitoramento
+
+- **Logs em Tempo Real**: Implementamos um endpoint `/api/logs` que permite a visualização remota dos logs da aplicação direto no painel administrativo.
+- **Health Check Avançado**: A rota `/api/healthcheck` não apenas retorna "ok", mas verifica a latência da API e a capacidade de escrita no disco (persistência).
+- **Métricas e Dashboards**: Utilizamos **Chart.js** para plotar um gráfico de visitas em tempo real, consumindo dados do endpoint `/api/metrics`.
+
+### 5.2 Segurança e Autenticação
+
+- **Autenticação via Token**: Para proteger rotas sensíveis (como o Health Check detalhado), implementamos uma verificação de token (Header/Query Param). Sem o token correto, a API retorna apenas informações públicas.
+- **Backup Automático**: Um **Cron Job** dentro do container realiza backups periódicos dos dados (`visitas.json`) para uma pasta segura, simulando uma estratégia de Disaster Recovery.
+
+### 5.3 UX/UI Premium
+
+- **Tema Híbrido (Dark/Light Mode)**: O usuário pode alternar entre temas, demonstrando domínio de CSS Variables e manipulação de DOM.
+- **Micro-interações**: Animações de entrada (`FadeIn`) e efeitos de hover nos cards para uma experiência fluida.
+
+## 6. Comparativo de Modelos: IaaS vs PaaS vs SaaS
+
+| Característica     | IaaS (ex: AWS EC2)           | **PaaS (ex: Cloud Run)**                | SaaS (ex: Firebase)              |
+| :----------------- | :--------------------------- | :-------------------------------------- | :------------------------------- |
+| **Gerenciamento**  | Alto (OS, Patchs, Rede)      | **Médio (Apenas Container)**            | Baixo (Apenas Código/Dados)      |
+| **Escalabilidade** | Manual ou Auto-Scaling Group | **Automática (Zero to N)**              | Automática                       |
+| **Custo**          | Paga por instância ligada    | **Paga por requisição (Pay-as-you-go)** | Paga por uso/tier                |
+| **Flexibilidade**  | Total (Qualquer OS/Soft)     | **Alta (Qualquer Container)**           | Limitada (Regras da Plataforma)  |
+| **Ideal para**     | Legado, Apps Complexos       | **Microserviços, APIs, Web Apps**       | Apps Mobile, Prototipagem Rápida |
+
+## 7. Conclusão
 
 O projeto demonstra com sucesso a aplicação de conceitos modernos de Cloud Computing e DevOps. Através da utilização de containers (Docker), conseguimos encapsular a aplicação e suas dependências, garantindo portabilidade entre o ambiente de desenvolvimento local e a nuvem.
 

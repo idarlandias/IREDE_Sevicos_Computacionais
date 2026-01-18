@@ -7,7 +7,30 @@ app = FastAPI()
 
 DATA_DIR = "/data"
 COUNTER_FILE = os.path.join(DATA_DIR, "counter.txt")
+LOGS_FILE = os.path.join(DATA_DIR, "logs.txt")
 START_TIME = time.time()
+
+# Ensure logs file exists
+if not os.path.exists(DATA_DIR):
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except OSError:
+        pass  # Fallback for read-only systems or permission issues if simulated
+
+if not os.path.exists(LOGS_FILE):
+    try:
+        with open(LOGS_FILE, "w") as f:
+            f.write(f"[{datetime.now()}] System initialized.\n")
+    except:
+        pass
+
+
+def log_event(event: str):
+    try:
+        with open(LOGS_FILE, "a") as f:
+            f.write(f"[{datetime.now()}] {event}\n")
+    except:
+        pass
 
 
 def get_uptime():
@@ -42,6 +65,86 @@ def increment_counter():
         pass
 
     return count
+
+
+@app.get("/api/logs")
+def get_logs():
+    if os.path.exists(LOGS_FILE):
+        try:
+            with open(LOGS_FILE, "r") as f:
+                lines = f.readlines()
+                return {"logs": [line.strip() for line in lines[-10:]]}
+        except:
+            return {"logs": []}
+    return {"logs": []}
+
+
+@app.get("/api/healthcheck")
+def healthcheck(token: str = None):
+    # Simple Auth Check (Demo)
+    if token == "secret123":
+        auth_status = "authenticated"
+    else:
+        auth_status = "public"
+
+    # 1. Check persistence
+    persistence_status = False
+    try:
+        test_file = os.path.join(DATA_DIR, "health_test.tmp")
+        with open(test_file, "w") as f:
+            f.write("test")
+        os.remove(test_file)
+        persistence_status = True
+    except:
+        persistence_status = False
+
+    # 2. Check Latency (simulated)
+    start = time.time()
+    _ = 1 + 1
+    latency = (time.time() - start) * 1000  # ms
+
+    return {
+        "status": "healthy" if persistence_status else "unhealthy",
+        "persistence": "writable" if persistence_status else "readonly",
+        "latency_ms": round(latency, 2),
+        "cloud_run": "yes" if os.environ.get("K_SERVICE") else "no",
+        "auth": auth_status,
+    }
+
+
+@app.get("/api/config")
+def get_config():
+    # Return safe environment variables
+    return {
+        "APP_VERSION": os.environ.get("APP_VERSION", "dev"),
+        "APP_ENV": os.environ.get("APP_ENV", "local"),
+        "SERVICE_NAME": os.environ.get("K_SERVICE", "local-container"),
+    }
+
+
+@app.get("/api/metrics")
+def get_metrics():
+    # Helper for charts
+    uptime = int(get_uptime())
+
+    # Get visit count safely
+    count = 0
+    if os.path.exists(COUNTER_FILE):
+        try:
+            with open(COUNTER_FILE, "r") as f:
+                val = f.read().strip()
+                if val.isdigit():
+                    count = int(val)
+        except:
+            pass
+
+    return {"total_visits": count, "uptime_seconds": uptime, "version": "1.0.0"}
+
+
+@app.post("/api/rollback")
+def simulate_rollback():
+    log_event("Rollback simulated: Version 1.0.0 restored.")
+    return {"status": "rollback_initiated", "target_version": "1.0.0-prev"}
 
 
 @app.get("/api/health")

@@ -91,5 +91,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    fetchVisits(); // Initial load of visits
+    // Advanced Features
+    const tokenInput = document.getElementById('auth-token');
+    
+    // Charts
+    const ctx = document.getElementById('visitsChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Visitas (Tempo Real)',
+                data: [],
+                borderColor: '#10b981',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' } }, x: { grid: { color: 'rgba(255,255,255,0.1)' } } },
+            plugins: { legend: { labels: { color: '#cbd5e1' } } }
+        }
+    });
+
+    // Update interval
+    setInterval(async () => {
+        const token = tokenInput.value;
+        const now = new Date().toLocaleTimeString();
+
+        // 1. Logs
+        try {
+            const res = await fetch('/api/logs');
+            const data = await res.json();
+            const logsContainer = document.getElementById('realtime-logs');
+            logsContainer.innerHTML = data.logs.map(l => `<div>${l}</div>`).join('');
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        } catch(e) {}
+
+        // 2. Health & Metrics
+        try {
+            const res = await fetch(`/api/healthcheck?token=${token}`);
+            const data = await res.json();
+            
+            // Health UI
+            const hStatus = document.getElementById('health-status');
+            hStatus.innerHTML = `Health: ${data.status === 'healthy' ? '✅' : '❌'} | Auth: ${data.auth === 'authenticated' ? '🔓' : '🔒'}`;
+            
+            // Metrics Chart update
+            const mRes = await fetch('/api/metrics');
+            const mData = await mRes.json();
+            
+            if(chart.data.labels.length > 10) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.data.labels.push(now);
+            chart.data.datasets[0].data.push(mData.total_visits);
+            chart.update();
+            
+        } catch(e) {}
+        
+    }, 5000);
 });

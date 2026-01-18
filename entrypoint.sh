@@ -1,4 +1,5 @@
-#!/bin/bash
+# Start Cron service
+service cron start
 
 # Start Nginx in background
 nginx &
