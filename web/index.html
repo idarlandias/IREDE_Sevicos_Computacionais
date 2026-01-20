@@ -3,14 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cloud Architecture Portfolio</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Cloud Architecture Portfolio | Docker & Google Cloud Run</title>
+    <meta name="description" content="Projeto Integrador demonstrando arquitetura cloud-native com Docker, FastAPI, Nginx e deploy automatizado no Google Cloud Run." />
+    <meta name="keywords" content="Docker, Cloud Run, FastAPI, CI/CD, GitHub Actions, DevOps, Microsserviços" />
+    <meta name="author" content="Idarlan Dias" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cloud Architecture Portfolio" />
+    <meta property="og:description" content="Implementação de microsserviços containerizados com deployment contínuo no Google Cloud Run." />
+    <meta property="og:url" content="https://portfolio-docker-cloudrun-728889819893.us-central1.run.app" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐳</text></svg>" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css?v=2" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css?v=3" />
   </head>
   <body>
     <div class="background-globes">
@@ -66,27 +81,27 @@
       <section class="status-panel">
         <div class="panel-header">
           <h2>System Status</h2>
-          <div class="status-indicator" id="connection-status">
-            <span class="dot"></span> Online
+          <div class="status-indicator status-loading" id="connection-status">
+            <span class="dot"></span> <span id="status-text">Conectando...</span>
           </div>
         </div>
 
         <div class="metrics-grid">
           <div class="metric">
             <span class="label">Versão</span>
-            <span class="value" id="api-version">--</span>
+            <span class="value" id="api-version"><span class="skeleton skeleton-text"></span></span>
           </div>
           <div class="metric">
             <span class="label">Uptime</span>
-            <span class="value" id="api-uptime">--</span>
+            <span class="value" id="api-uptime"><span class="skeleton skeleton-text"></span></span>
           </div>
           <div class="metric">
             <span class="label">Ambiente</span>
-            <span class="value" id="api-env">--</span>
+            <span class="value" id="api-env"><span class="skeleton skeleton-text"></span></span>
           </div>
           <div class="metric highlight">
             <span class="label">Visitas Totais</span>
-            <span class="value" id="api-visits">--</span>
+            <span class="value" id="api-visits"><span class="skeleton skeleton-text"></span></span>
           </div>
         </div>
 
@@ -97,96 +112,99 @@
           Última atualização: <span id="last-update-time">--</span>
         </p>
 
-        <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
-            <h3>📜 Persistência de Dados (Volume)</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0.5rem 0 1rem;">
-                Demonstração de gravação em arquivo JSON local (/data/visitas.json).
-            </p>
-            <div style="display: flex; gap: 0.5rem;">
-                <input type="text" id="visitor-name" placeholder="Seu nome..."
-                       style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); padding: 0.8rem; border-radius: 0.5rem; color: white; flex: 1;">
-                <button id="register-btn" class="btn-primary" style="background: linear-gradient(135deg, #10b981, #059669);">
-                    Gravar Visita
-                </button>
-            </div>
-            <div id="visits-log" style="margin-top: 1rem; font-family: monospace; font-size: 0.85rem; color: #a5f3fc; max-height: 150px; overflow-y: auto;">
-                <!-- Visits will appear here -->
-            </div>
+        <!-- Persistence Section -->
+        <div class="section-divider persistence-section">
+          <h3>📜 Persistência de Dados (Volume)</h3>
+          <p class="persistence-description">
+            Demonstração de gravação em arquivo JSON local (/data/visitas.json).
+          </p>
+          <div class="form-row">
+            <input type="text" id="visitor-name" class="input-dark" placeholder="Seu nome..." />
+            <button id="register-btn" class="btn-primary btn-success">
+              Gravar Visita
+            </button>
+          </div>
+          <div id="visits-log" class="visits-log">
+            <!-- Visits will appear here -->
+          </div>
         </div>
 
-            <!-- Advanced Metrics Panel -->
-            <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <div>
-                    <h3>📊 Métricas de Acesso</h3>
-                    <canvas id="visitsChart" style="max-height: 200px; margin-top: 1rem;"></canvas>
-                </div>
-                <div>
-                    <h3>🛡️ Logs & Segurança</h3>
-                    <div style="margin-bottom: 1rem;">
-                        <input type="password" id="auth-token" placeholder="Token de Acesso (ex: secret123)"
-                               style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); padding: 0.5rem; border-radius: 0.5rem; color: white; width: 100%;">
-                        <div id="health-status" style="margin-top: 0.5rem; font-size: 0.9rem;">
-                            Health: <span style="color: gray;">Verificando...</span>
-                        </div>
-                    </div>
-                    <div id="realtime-logs" style="background: #0f172a; border-radius: 0.5rem; padding: 1rem; font-family: monospace; font-size: 0.75rem; color: #38bdf8; height: 150px; overflow-y: scroll;">
-                        <!-- Logs will appear here -->
-                        <div style="opacity: 0.5;">Aguardando logs...</div>
-                    </div>
-                    <button id="rollback-btn" title="Restaura a versão anterior da aplicação em caso de falha crítica." style="margin-top: 0.5rem; background: #ef4444; border: none; color: white; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem;">
-                        ⚠️ Simular Rollback
-                    </button>
-                </div>
+        <!-- Advanced Metrics Panel -->
+        <div class="advanced-grid">
+          <div>
+            <h3>📊 Métricas de Acesso</h3>
+            <canvas id="visitsChart" class="chart-container"></canvas>
+          </div>
+          <div>
+            <h3>🛡️ Logs & Segurança</h3>
+            <div class="security-section">
+              <input type="password" id="auth-token" class="input-token" placeholder="Token de Acesso (ex: secret123)" />
+              <div id="health-status" class="health-status">
+                Health: <span style="color: gray;">Verificando...</span>
+              </div>
             </div>
-        </section>
+            <div id="realtime-logs" class="realtime-logs">
+              <!-- Logs will appear here -->
+              <div class="logs-placeholder">Aguardando logs...</div>
+            </div>
+            <button id="rollback-btn" class="btn-danger" title="Restaura a versão anterior da aplicação em caso de falha crítica.">
+              ⚠️ Simular Rollback
+            </button>
+          </div>
+        </div>
+      </section>
 
-        <footer style="margin-top: 4rem; text-align: center; color: var(--text-secondary); padding-bottom: 2rem; border-top: 1px solid var(--card-border); padding-top: 2rem;">
-            <p>Projeto Integrador - Residência em TIC 20</p>
-            <p style="font-size: 0.85rem; margin-top: 0.5rem;">
-                <a href="https://github.com/idarlandias/IREDE_Sevicos_Computacionais" target="_blank" rel="noopener" style="color: var(--accent-color); text-decoration: none;">GitHub Repository</a> |
-                <a href="relatorio_tecnico.pdf" target="_blank" rel="noopener" style="color: var(--accent-color); text-decoration: none;">📄 Relatório Técnico (PDF)</a> |
-                Versão: <span id="footer-version">v1.0.0</span> |
-                Deploy: Google Cloud Run
-            </p>
-        </footer>
+      <footer class="site-footer">
+        <p>Projeto Integrador - Residência em TIC 20</p>
+        <p class="footer-links">
+          <a href="https://github.com/idarlandias/IREDE_Sevicos_Computacionais" target="_blank" rel="noopener">GitHub Repository</a> |
+          <a href="relatorio_tecnico.pdf" target="_blank" rel="noopener">📄 Relatório Técnico (PDF)</a> |
+          Versão: <span id="footer-version">v1.0.0</span> |
+          Deploy: Google Cloud Run
+        </p>
+      </footer>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
-    <!-- Theme Toggle (Simple implementation) -->
-    <button id="theme-toggle" style="position: fixed; top: 1rem; right: 1rem; background: rgba(255,255,255,0.1); border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; z-index: 100;">
-        🌙
+    <script src="app.js?v=2"></script>
+    
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
+      🌙
     </button>
+    
     <script>
-        const updateLog = (msg) => {
-            const logs = document.getElementById('realtime-logs');
-            logs.innerHTML += `<div>> ${msg}</div>`;
-            logs.scrollTop = logs.scrollHeight;
-        };
+      const updateLog = (msg) => {
+        const logs = document.getElementById('realtime-logs');
+        logs.innerHTML += `<div>> ${msg}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+      };
 
-        // Rollback Simulation
-        document.getElementById('rollback-btn').addEventListener('click', async () => {
-             if(confirm("Confirmar rollback para versão anterior?")) {
-                 try {
-                     const res = await fetch('/api/rollback', { method: 'POST' });
-                     const data = await res.json();
-                     alert(`Rollback iniciado: ${data.target_version}`);
-                     updateLog("Rollback initiated by user.");
-                 } catch(e) {
-                     alert("Erro no rollback");
-                 }
-             }
-        });
+      // Rollback Simulation
+      document.getElementById('rollback-btn').addEventListener('click', async () => {
+        if(confirm("Confirmar rollback para versão anterior?")) {
+          try {
+            const res = await fetch('/api/rollback', { method: 'POST' });
+            const data = await res.json();
+            alert(`Rollback iniciado: ${data.target_version}`);
+            updateLog("Rollback initiated by user.");
+          } catch(e) {
+            alert("Erro no rollback");
+          }
+        }
+      });
 
-        // Theme Toggle using CSS Class
-        const themeBtn = document.getElementById('theme-toggle');
-        let isDark = true;
+      // Theme Toggle using CSS Class
+      const themeBtn = document.getElementById('theme-toggle');
+      let isDark = true;
 
-        themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            isDark = !isDark;
-            themeBtn.textContent = isDark ? '🌙' : '☀️';
-        });
+      themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        isDark = !isDark;
+        themeBtn.textContent = isDark ? '🌙' : '☀️';
+      });
     </script>
-</body>
+  </body>
 </html>
+</CodeContent>
+<parameter name="EmptyFile">false

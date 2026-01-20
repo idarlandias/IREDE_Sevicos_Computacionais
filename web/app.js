@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const statusDot = document.querySelector('.dot');
+    const statusIndicator = document.getElementById('connection-status');
+    const statusText = document.getElementById('status-text');
     const updateTimeEl = document.getElementById('last-update-time');
     
     async function fetchStatus() {
-        // Simulate loading state
-        document.body.style.cursor = 'wait';
+        // Set loading state
+        statusIndicator.classList.add('status-loading');
+        statusIndicator.classList.remove('status-online', 'status-offline');
+        statusText.textContent = 'Conectando...';
         
         try {
             // Add timestamp to prevent caching
@@ -13,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await response.json();
             
-            // Update metrics
+            // Update metrics (remove skeleton)
             document.getElementById('api-version').textContent = data.version;
             document.getElementById('api-uptime').textContent = data.uptime;
             document.getElementById('api-env').textContent = data.env;
@@ -23,16 +26,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
             updateTimeEl.textContent = now.toLocaleTimeString();
             
-            // Visual feedback
-            statusDot.style.backgroundColor = '#10b981';
-            statusDot.style.boxShadow = '0 0 10px #10b981';
+            // Success state
+            statusIndicator.classList.remove('status-loading');
+            statusIndicator.classList.add('status-online');
+            statusText.textContent = 'Online';
+            
+            const dot = statusIndicator.querySelector('.dot');
+            dot.style.backgroundColor = '#10b981';
+            dot.style.boxShadow = '0 0 10px #10b981';
             
         } catch (error) {
             console.error('Error fetching status:', error);
-            statusDot.style.backgroundColor = '#ef4444';
-            statusDot.style.boxShadow = '0 0 10px #ef4444';
-        } finally {
-            document.body.style.cursor = 'default';
+            
+            // Error state
+            statusIndicator.classList.remove('status-loading');
+            statusIndicator.classList.add('status-offline');
+            statusText.textContent = 'Offline';
+            
+            const dot = statusIndicator.querySelector('.dot');
+            dot.style.backgroundColor = '#ef4444';
+            dot.style.boxShadow = '0 0 10px #ef4444';
+            
+            // Show error in metrics
+            document.getElementById('api-version').textContent = '--';
+            document.getElementById('api-uptime').textContent = '--';
+            document.getElementById('api-env').textContent = '--';
+            document.getElementById('api-visits').textContent = '--';
         }
     }
 
