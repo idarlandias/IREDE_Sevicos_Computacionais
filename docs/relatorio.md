@@ -95,6 +95,16 @@ Para garantir que a aplicação funcione perfeitamente em qualquer ambiente (dev
 - **Orquestração de Processos**: O `entrypoint` gerencia múltiplos serviços (Cron, Nginx, Uvicorn) em um único container, garantindo que o monitoramento inicie em paralelo com a aplicação.
 - **Fail-Safe no Backup**: O script de backup verifica a existência dos arquivos antes de tentar a cópia, evitando falhas silenciosas ou logs de erro desnecessários na inicialização.
 
+### 5.5 Experiência do Usuário Avançada (UX 2.0)
+
+Para elevar a experiência do usuário a um nível profissional, foram implementadas funcionalidades visuais modernas:
+
+- **Toast Notifications**: Substituímos os alertas nativos do JavaScript (`alert()`) por notificações elegantes no estilo toast, que aparecem no topo da tela com animações suaves e ícones contextuais (✅ sucesso, ⚠️ aviso, ❌ erro).
+- **Confetti Animation**: Ao registrar uma visita com sucesso, uma explosão de 50 partículas coloridas (confetes) preenche a tela, criando uma micro-interação celebratória que aumenta o engajamento.
+- **Resource Gauges (CPU/Memory)**: Gráficos circulares em SVG animados simulam o uso de recursos do sistema (CPU e Memória RAM), atualizando dinamicamente a cada 5 segundos. Essa feature demonstra a capacidade de criar dashboards de monitoramento em tempo real.
+- **Skeleton Loaders**: Durante o carregamento inicial dos dados, retângulos animados com efeito "shimmer" indicam visualmente que o conteúdo está sendo buscado, seguindo padrões de UX modernos.
+- **Staggered Card Animations**: Os cards de tecnologia entram na tela sequencialmente com delay escalonado, criando uma transição suave e profissional.
+
 ## 6. Comparativo de Modelos: IaaS vs PaaS vs SaaS
 
 | Característica     | IaaS (ex: AWS EC2)           | **PaaS (ex: Cloud Run)**                | SaaS (ex: Firebase)              |
