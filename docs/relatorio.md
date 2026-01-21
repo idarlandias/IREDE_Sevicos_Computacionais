@@ -115,7 +115,29 @@ Para elevar a experiência do usuário a um nível profissional, foram implement
 | **Flexibilidade**  | Total (Qualquer OS/Soft)     | **Alta (Qualquer Container)**           | Limitada (Regras da Plataforma)  |
 | **Ideal para**     | Legado, Apps Complexos       | **Microserviços, APIs, Web Apps**       | Apps Mobile, Prototipagem Rápida |
 
-## 7. Conclusão
+## 7. Screenshots e Evidências
+
+### 7.1 Dashboard em Funcionamento
+
+A figura abaixo demonstra o painel de monitoramento da aplicação em produção, exibindo:
+
+- Métricas de acesso em tempo real (gráfico de linha)
+- Logs e segurança com autenticação
+- Gráficos de recursos simulados (CPU e Memória)
+
+![Dashboard da Aplicação](screenshot_dashboard.png)
+_Figura 2: Painel de monitoramento com gauges de CPU (48%) e Memória (66%)_
+
+### 7.2 Análise de Linguagens do Repositório
+
+O GitHub analisa automaticamente a distribuição de linguagens do projeto, demonstrando a natureza **Full Stack** da aplicação:
+
+![Linguagens do Repositório](github_languages.png)
+_Figura 3: Distribuição de linguagens - Python (31%), CSS (29.1%), JavaScript (18.8%), HTML (17.7%), Dockerfile (2.4%), Shell (1%)_
+
+O percentual de Dockerfile (2.4%) é típico para projetos containerizados, pois Dockerfiles são naturalmente concisos (~50 linhas), enquanto o código de aplicação é mais extenso.
+
+## 8. Conclusão
 
 O projeto demonstra com sucesso a aplicação de conceitos modernos de Cloud Computing e DevOps. Através da utilização de containers (Docker), conseguimos encapsular a aplicação e suas dependências, garantindo portabilidade entre o ambiente de desenvolvimento local e a nuvem.
 
