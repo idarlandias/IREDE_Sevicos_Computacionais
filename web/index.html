@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
     
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=3" />
+    <link rel="stylesheet" href="style.css?v=4" />
   </head>
   <body>
     <div class="background-globes">
@@ -152,7 +152,42 @@
             </button>
           </div>
         </div>
+
+        <!-- Resource Gauges Section -->
+        <div class="section-divider">
+          <h3>⚡ Recursos do Sistema (Simulado)</h3>
+          <div class="gauges-grid">
+            <div class="gauge-card">
+              <div class="gauge-title">CPU Usage</div>
+              <div class="gauge-circle">
+                <svg viewBox="0 0 36 36">
+                  <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  <path class="gauge-fill cpu" id="cpu-gauge" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                </svg>
+                <div class="gauge-value" id="cpu-value">0%</div>
+              </div>
+              <div class="gauge-label">Processamento</div>
+            </div>
+            <div class="gauge-card">
+              <div class="gauge-title">Memory Usage</div>
+              <div class="gauge-circle">
+                <svg viewBox="0 0 36 36">
+                  <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  <path class="gauge-fill memory" id="memory-gauge" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                </svg>
+                <div class="gauge-value" id="memory-value">0%</div>
+              </div>
+              <div class="gauge-label">Memória RAM</div>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <!-- Toast Container -->
+      <div id="toast-container" class="toast-container"></div>
+      
+      <!-- Confetti Container -->
+      <div id="confetti-container" class="confetti-container"></div>
 
       <footer class="site-footer">
         <p>Projeto Integrador - Residência em TIC 20</p>

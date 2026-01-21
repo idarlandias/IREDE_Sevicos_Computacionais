@@ -55,18 +55,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ========== TOAST NOTIFICATIONS ==========
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+        
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${message}</span>`;
+        container.appendChild(toast);
+        
+        // Remove after animation
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ========== CONFETTI ANIMATION ==========
+    function launchConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#10b981', '#38bdf8', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899'];
+        
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(confetti);
+        }
+        
+        // Cleanup
+        setTimeout(() => container.innerHTML = '', 4000);
+    }
+
     // Initial load
     fetchStatus();
 
     // Button handler
     document.getElementById('refresh-btn').addEventListener('click', fetchStatus);
+    
     // Register Visit Handler
     document.getElementById('register-btn').addEventListener('click', async () => {
         const nameInput = document.getElementById('visitor-name');
         const name = nameInput.value.trim();
         
         if (!name) {
-            alert("Por favor, digite um nome.");
+            showToast('Por favor, digite um nome.', 'warning');
             return;
         }
         
@@ -80,12 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 nameInput.value = '';
                 fetchVisits(); // Refresh list
+                showToast(`Visita de "${name}" registrada com sucesso!`, 'success');
+                launchConfetti(); // 🎉
             } else {
-                alert("Erro ao salvar visita.");
+                showToast('Erro ao salvar visita.', 'error');
             }
         } catch (e) {
             console.error(e);
-            alert("Erro de conexão.");
+            showToast('Erro de conexão.', 'error');
         }
     });
 
@@ -196,7 +237,30 @@ document.addEventListener('DOMContentLoaded', () => {
             chart.data.datasets[0].data.push(mData.total_visits);
             chart.update();
             
+            // 3. Update Resource Gauges (Simulated)
+            updateGauges();
+            
         } catch(e) {}
         
     }, 5000);
+
+    // ========== RESOURCE GAUGES ==========
+    function updateGauges() {
+        // Simulate CPU (random between 15-65%)
+        const cpuValue = Math.floor(15 + Math.random() * 50);
+        const cpuGauge = document.getElementById('cpu-gauge');
+        const cpuDisplay = document.getElementById('cpu-value');
+        cpuGauge.setAttribute('stroke-dasharray', `${cpuValue}, 100`);
+        cpuDisplay.textContent = cpuValue + '%';
+        
+        // Simulate Memory (random between 30-80%)
+        const memValue = Math.floor(30 + Math.random() * 50);
+        const memGauge = document.getElementById('memory-gauge');
+        const memDisplay = document.getElementById('memory-value');
+        memGauge.setAttribute('stroke-dasharray', `${memValue}, 100`);
+        memDisplay.textContent = memValue + '%';
+    }
+
+    // Initial gauge update
+    updateGauges();
 });
