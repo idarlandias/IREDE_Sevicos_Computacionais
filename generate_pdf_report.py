@@ -268,13 +268,98 @@ pdf.body_text(
     "Um Cron Job executa min-a-min verificando a existência de dados críticos e criando cópias de segurança datadas. Embora o disco seja efêmero, essa lógica prepara a aplicação para cenários reais onde esses backups seriam enviados para um Bucket S3/GCS."
 )
 
-pdf.chapter_title("6. Conclusão")
+# --- PÁGINA 6: UX 2.0 E SCREENSHOTS ---
+pdf.add_page()
+pdf.chapter_title("6. Experiência do Usuário Avançada (UX 2.0)")
+
+pdf.section_title("6.1. Micro-interações e Feedback Visual")
+pdf.body_text(
+    "Para elevar a experiência do usuário a um nível profissional, foram implementadas funcionalidades visuais modernas que demonstram domínio de CSS3 e JavaScript:"
+)
+pdf.list_item(
+    "- Toast Notifications: Notificações elegantes no topo da tela substituindo os alerts nativos do navegador."
+)
+pdf.list_item(
+    "- Confetti Animation: Explosão de 50 partículas coloridas ao registrar visitas, criando uma micro-interação celebratória."
+)
+pdf.list_item(
+    "- Skeleton Loaders: Retângulos animados com efeito shimmer durante o carregamento de dados."
+)
+pdf.list_item(
+    "- Staggered Card Animations: Cards entram em sequência com delay escalonado."
+)
+
+pdf.section_title("6.2. Dashboards de Monitoramento")
+pdf.body_text(
+    "Gráficos circulares em SVG animados (gauges) simulam o uso de CPU e Memória RAM, atualizando dinamicamente a cada 5 segundos. Essa feature demonstra a capacidade de criar dashboards de monitoramento em tempo real."
+)
+
+pdf.chapter_title("7. Screenshots e Evidências")
+
+pdf.section_title("7.1. Dashboard em Funcionamento")
+pdf.body_text(
+    "A figura abaixo demonstra o painel de monitoramento da aplicação em produção, exibindo métricas de acesso, logs de segurança e gráficos de recursos simulados (CPU e Memória):"
+)
+
+# Insert dashboard screenshot if exists
+if os.path.exists("docs/screenshot_dashboard.png"):
+    try:
+        img = Image.open("docs/screenshot_dashboard.png").convert("RGB")
+        img.save("docs/screenshot_dashboard_temp.jpg")
+        pdf.image("docs/screenshot_dashboard_temp.jpg", x=20, w=170)
+        os.remove("docs/screenshot_dashboard_temp.jpg")
+        pdf.ln(5)
+        pdf.set_font("helvetica", "I", 9)
+        pdf.cell(
+            0,
+            5,
+            "Figura 2: Painel de monitoramento com gauges de CPU e Memória",
+            align="C",
+            ln=1,
+        )
+        pdf.ln(5)
+    except Exception as e:
+        pdf.body_text(f"[Imagem não disponível: {e}]")
+
+pdf.section_title("7.2. Análise de Linguagens do Repositório")
+pdf.body_text(
+    "O GitHub analisa automaticamente a distribuição de linguagens do projeto, demonstrando a natureza Full Stack da aplicação: Python (31%), CSS (29.1%), JavaScript (18.8%), HTML (17.7%), Dockerfile (2.4%), Shell (1%)."
+)
+
+# Insert GitHub languages screenshot if exists
+if os.path.exists("docs/github_languages.png"):
+    try:
+        img = Image.open("docs/github_languages.png").convert("RGB")
+        img.save("docs/github_languages_temp.jpg")
+        pdf.image("docs/github_languages_temp.jpg", x=50, w=100)
+        os.remove("docs/github_languages_temp.jpg")
+        pdf.ln(5)
+        pdf.set_font("helvetica", "I", 9)
+        pdf.cell(
+            0,
+            5,
+            "Figura 3: Distribuição de linguagens no repositório GitHub",
+            align="C",
+            ln=1,
+        )
+        pdf.ln(5)
+    except Exception as e:
+        pdf.body_text(f"[Imagem não disponível: {e}]")
+
+pdf.body_text(
+    "O percentual de Dockerfile (2.4%) é típico para projetos containerizados, pois Dockerfiles são naturalmente concisos (~50 linhas), enquanto o código de aplicação é mais extenso."
+)
+
+pdf.chapter_title("8. Conclusão")
 pdf.body_text(
     "O projeto entrega uma arquitetura de referência para modernização de aplicações. Combinando a leveza do Nginx, a velocidade do FastAPI e a automação do Cloud Run, atingimos um nível de maturidade de software (SRE/DevOps) compatível com padrões de mercado."
 )
 pdf.body_text(
     "A aplicação é resiliente, observável e segura, pronta para escalar horizontalmente de acordo com a demanda."
 )
+pdf.body_text(
+    "Acesse o projeto online: https://portfolio-docker-cloudrun-728889819893.us-central1.run.app"
+)
 
 pdf.output("docs/Documentacao_Tecnica_Estendida.pdf")
-print("Novo PDF Gerado (5 Páginas): docs/Documentacao_Tecnica_Estendida.pdf")
+print("Novo PDF Gerado (6 Páginas): docs/Documentacao_Tecnica_Estendida.pdf")
