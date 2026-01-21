@@ -294,51 +294,26 @@ pdf.body_text(
     "Gráficos circulares em SVG animados (gauges) simulam o uso de CPU e Memória RAM, atualizando dinamicamente a cada 5 segundos. Essa feature demonstra a capacidade de criar dashboards de monitoramento em tempo real."
 )
 
-pdf.chapter_title("7. Screenshots e Evidências")
+pdf.chapter_title("7. Evidências de Containerização")
 
-pdf.section_title("7.1. Dashboard em Funcionamento")
+pdf.section_title("7.1. Arquitetura do Container Docker")
 pdf.body_text(
-    "A figura abaixo demonstra o painel de monitoramento da aplicação em produção, exibindo métricas de acesso, logs de segurança e gráficos de recursos simulados (CPU e Memória):"
+    "A figura abaixo demonstra a arquitetura containerizada da aplicação, evidenciando os arquivos de configuração (Dockerfile, compose.yml, entrypoint.sh) e o funcionamento interno do container único rodando Nginx, FastAPI e Cron Job automatizado:"
 )
 
-# Insert dashboard screenshot if exists
-if os.path.exists("docs/screenshot_dashboard.png"):
+# Insert container architecture diagram
+if os.path.exists("docs/diagrama_container.png"):
     try:
-        img = Image.open("docs/screenshot_dashboard.png").convert("RGB")
-        img.save("docs/screenshot_dashboard_temp.jpg")
-        pdf.image("docs/screenshot_dashboard_temp.jpg", x=20, w=170)
-        os.remove("docs/screenshot_dashboard_temp.jpg")
+        img = Image.open("docs/diagrama_container.png").convert("RGB")
+        img.save("docs/diagrama_container_temp.jpg")
+        pdf.image("docs/diagrama_container_temp.jpg", x=25, w=160)
+        os.remove("docs/diagrama_container_temp.jpg")
         pdf.ln(5)
         pdf.set_font("helvetica", "I", 9)
         pdf.cell(
             0,
             5,
-            "Figura 2: Painel de monitoramento com gauges de CPU e Memória",
-            align="C",
-            ln=1,
-        )
-        pdf.ln(5)
-    except Exception as e:
-        pdf.body_text(f"[Imagem não disponível: {e}]")
-
-pdf.section_title("7.2. Análise de Linguagens do Repositório")
-pdf.body_text(
-    "O GitHub analisa automaticamente a distribuição de linguagens do projeto, demonstrando a natureza Full Stack da aplicação: Python (31%), CSS (29.1%), JavaScript (18.8%), HTML (17.7%), Dockerfile (2.4%), Shell (1%)."
-)
-
-# Insert GitHub languages screenshot if exists
-if os.path.exists("docs/github_languages.png"):
-    try:
-        img = Image.open("docs/github_languages.png").convert("RGB")
-        img.save("docs/github_languages_temp.jpg")
-        pdf.image("docs/github_languages_temp.jpg", x=50, w=100)
-        os.remove("docs/github_languages_temp.jpg")
-        pdf.ln(5)
-        pdf.set_font("helvetica", "I", 9)
-        pdf.cell(
-            0,
-            5,
-            "Figura 3: Distribuição de linguagens no repositório GitHub",
+            "Figura 2: Arquitetura do Container Docker único com Nginx, FastAPI e Cloud Run",
             align="C",
             ln=1,
         )
@@ -347,7 +322,7 @@ if os.path.exists("docs/github_languages.png"):
         pdf.body_text(f"[Imagem não disponível: {e}]")
 
 pdf.body_text(
-    "O percentual de Dockerfile (2.4%) é típico para projetos containerizados, pois Dockerfiles são naturalmente concisos (~50 linhas), enquanto o código de aplicação é mais extenso."
+    "O percentual de Dockerfile (2.4%) no repositório é típico para projetos containerizados, pois Dockerfiles são naturalmente concisos (~50 linhas), enquanto o código de aplicação (Python, CSS, JavaScript) é mais extenso."
 )
 
 pdf.chapter_title("8. Conclusão")
