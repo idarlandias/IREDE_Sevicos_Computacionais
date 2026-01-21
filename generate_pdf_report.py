@@ -119,6 +119,117 @@ class TechnicalReport(FPDF):
 
         self.ln(25)
 
+    def draw_files_table(self):
+        """Draws a table showing the key containerization files"""
+        y = self.get_y()
+
+        # Header
+        self.set_fill_color(30, 41, 59)  # Dark slate
+        self.set_text_color(255, 255, 255)
+        self.set_font("helvetica", "B", 10)
+        self.rect(20, y, 50, 8, "F")
+        self.rect(70, y, 120, 8, "F")
+        self.text(25, y + 5.5, "Arquivo")
+        self.text(75, y + 5.5, "Função")
+
+        # Reset text color
+        self.set_text_color(30, 41, 59)
+        self.set_font("helvetica", "", 9)
+
+        # Rows
+        rows = [
+            ("Dockerfile", "Define a imagem do container (Python + Nginx + FastAPI)"),
+            ("compose.yml", "Orquestra o container localmente com redes e volumes"),
+            ("entrypoint.sh", "Script que inicia os servicos dentro do container"),
+        ]
+
+        row_y = y + 8
+        for file, desc in rows:
+            self.set_fill_color(248, 250, 252)
+            self.rect(20, row_y, 50, 10, "F")
+            self.rect(70, row_y, 120, 10, "F")
+            self.text(25, row_y + 6.5, file)
+            self.text(75, row_y + 6.5, desc)
+            row_y += 10
+
+        self.ln(45)
+
+    def draw_full_architecture(self):
+        """Draws the complete container architecture diagram"""
+        y = self.get_y()
+
+        # Main container box (dashed border effect - solid for simplicity)
+        self.set_draw_color(100, 100, 100)
+        self.set_line_width(0.5)
+        self.set_fill_color(15, 23, 42)  # Dark background
+        self.rect(20, y, 170, 70, "D")
+
+        # Container title
+        self.set_font("helvetica", "B", 10)
+        self.set_text_color(255, 255, 255)
+        self.set_fill_color(30, 41, 59)
+        self.rect(25, y + 3, 160, 8, "F")
+        self.text(70, y + 8, "CONTAINER DOCKER (Único)")
+
+        # Base image
+        self.set_font("helvetica", "", 9)
+        self.set_fill_color(51, 65, 85)
+        self.rect(30, y + 15, 155, 7, "F")
+        self.text(35, y + 20, "Base: python:3.11-slim")
+
+        # NGINX Box
+        self.set_fill_color(56, 189, 248)  # Cyan
+        self.rect(35, y + 28, 55, 20, "F")
+        self.set_text_color(15, 23, 42)
+        self.set_font("helvetica", "B", 9)
+        self.text(45, y + 36, "NGINX")
+        self.set_font("helvetica", "", 8)
+        self.text(48, y + 42, ":8080")
+        self.text(40, y + 46, "+ HTML")
+
+        # Arrow
+        self.set_draw_color(16, 185, 129)  # Green
+        self.set_line_width(1)
+        self.line(90, y + 38, 105, y + 38)
+        self.line(102, y + 35, 105, y + 38)  # arrow head
+        self.line(102, y + 41, 105, y + 38)
+        self.set_line_width(0.5)
+
+        # FastAPI Box
+        self.set_fill_color(139, 92, 246)  # Purple
+        self.rect(110, y + 28, 55, 20, "F")
+        self.set_text_color(255, 255, 255)
+        self.set_font("helvetica", "B", 9)
+        self.text(115, y + 36, "FastAPI (Uvicorn)")
+        self.set_font("helvetica", "", 8)
+        self.text(128, y + 42, ":8000")
+        self.text(125, y + 46, "/api/*")
+
+        # Cron Job Box
+        self.set_fill_color(245, 158, 11)  # Orange
+        self.set_text_color(15, 23, 42)
+        self.rect(35, y + 52, 130, 8, "F")
+        self.set_font("helvetica", "", 8)
+        self.text(60, y + 57, "+ Cron Job (backup automático)")
+
+        # Arrow down to Cloud Run
+        self.set_draw_color(16, 185, 129)
+        self.set_line_width(1.5)
+        self.line(105, y + 70, 105, y + 80)
+        self.line(102, y + 77, 105, y + 80)
+        self.line(108, y + 77, 105, y + 80)
+
+        # Cloud Run box
+        self.set_fill_color(66, 133, 244)  # Google Blue
+        self.set_text_color(255, 255, 255)
+        self.set_font("helvetica", "B", 9)
+        self.rect(55, y + 82, 100, 10, "F")
+        self.text(60, y + 88, "Google Cloud Run (Executa o container na nuvem)")
+
+        self.set_text_color(30, 41, 59)  # Reset
+        self.set_line_width(0.2)
+        self.ln(100)
+
 
 pdf = TechnicalReport()
 pdf.alias_nb_pages()
@@ -296,30 +407,21 @@ pdf.body_text(
 
 pdf.chapter_title("7. Evidências de Containerização")
 
-pdf.section_title("7.1. Arquitetura do Container Docker")
+pdf.section_title("7.1. Arquivos de Configuração")
 pdf.body_text(
-    "A figura abaixo demonstra a arquitetura containerizada da aplicação, evidenciando os arquivos de configuração (Dockerfile, compose.yml, entrypoint.sh) e o funcionamento interno do container único rodando Nginx, FastAPI e Cron Job automatizado:"
+    "A tabela abaixo apresenta os arquivos essenciais para a containerização do projeto:"
 )
 
-# Insert container architecture diagram
-if os.path.exists("docs/diagrama_container.png"):
-    try:
-        img = Image.open("docs/diagrama_container.png").convert("RGB")
-        img.save("docs/diagrama_container_temp.jpg")
-        pdf.image("docs/diagrama_container_temp.jpg", x=25, w=160)
-        os.remove("docs/diagrama_container_temp.jpg")
-        pdf.ln(5)
-        pdf.set_font("helvetica", "I", 9)
-        pdf.cell(
-            0,
-            5,
-            "Figura 2: Arquitetura do Container Docker único com Nginx, FastAPI e Cloud Run",
-            align="C",
-            ln=1,
-        )
-        pdf.ln(5)
-    except Exception as e:
-        pdf.body_text(f"[Imagem não disponível: {e}]")
+# Draw the files table
+pdf.draw_files_table()
+
+pdf.section_title("7.2. Arquitetura do Container")
+pdf.body_text(
+    "O diagrama abaixo ilustra como funciona a arquitetura do container único, demonstrando a comunicação entre Nginx e FastAPI, além do Cron Job para backups automáticos:"
+)
+
+# Draw the architecture diagram
+pdf.draw_full_architecture()
 
 pdf.body_text(
     "O percentual de Dockerfile (2.4%) no repositório é típico para projetos containerizados, pois Dockerfiles são naturalmente concisos (~50 linhas), enquanto o código de aplicação (Python, CSS, JavaScript) é mais extenso."
